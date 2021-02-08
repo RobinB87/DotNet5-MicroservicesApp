@@ -29,18 +29,12 @@ namespace Catalog.API.Repositories
 
         public async Task<IEnumerable<Product>> GetProductsByName(string name)
         {
-            var filter = Builders<Product>
-                .Filter.ElemMatch(p => p.Name, name);
-
-            return await _context.Products.Find(filter).ToListAsync();
+            return await _context.Products.Find(p => p.Name == name).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategory(string category)
         {
-            var filter = Builders<Product>
-                .Filter.ElemMatch(p => p.Category, category);
-
-            return await _context.Products.Find(filter).ToListAsync();
+            return await _context.Products.Find(p => p.Category == category).ToListAsync();
         }
 
         public async Task Create(Product product)
