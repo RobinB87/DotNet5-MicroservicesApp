@@ -1,5 +1,4 @@
 using EventBusRabbitMQ;
-using EventBusRabbitMQ.Producer;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Ordering.API.Extensions;
 using Ordering.API.RabbitMQ;
 using Ordering.Application.Handlers;
 using Ordering.Core.Repositories;
@@ -45,11 +45,11 @@ namespace Ordering.API
                     Configuration.GetConnectionString(
                         "OrderConnection")), ServiceLifetime.Singleton);
 
-            services.AddMediatR(typeof(CheckoutOrderHandler).GetTypeInfo().Assembly);
-
-            services.AddTransient<IOrderRepository, OrderRepository>();
+            // Order is important here
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddMediatR(typeof(CheckoutOrderHandler).GetTypeInfo().Assembly);
 
             services.AddSingleton<IRabbitMQConnection>(c =>
             {
@@ -94,6 +94,8 @@ namespace Ordering.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseRabbitListener();
         }
     }
 }
