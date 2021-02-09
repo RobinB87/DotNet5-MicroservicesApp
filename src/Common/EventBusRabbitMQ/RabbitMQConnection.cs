@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace EventBusRabbitMQ
 {
@@ -42,7 +42,7 @@ namespace EventBusRabbitMQ
             {
                 _logger.LogError("Rabbit MQ connection could not be created. Trying again.");
 
-                Thread.Sleep(2000);
+                Task.Delay(2000);
                 _connection = _connectionFactory.CreateConnection();
             }
 
@@ -71,13 +71,11 @@ namespace EventBusRabbitMQ
             {
                 _connection.Dispose();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                _logger.LogError("Error while trying to dispose Rabbit MQ connection.");
+                _logger.LogError("Error while trying to dispose Rabbit MQ connection.", e);
                 throw;
             }
         }
-
-       
     }
 }
