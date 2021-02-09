@@ -6,5 +6,6 @@ namespace Basket.API.Controllers
     [ApiController]
     public class BasketController : ControllerBase
     {
+
     }
 }
