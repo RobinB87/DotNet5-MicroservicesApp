@@ -22,7 +22,7 @@ namespace WebApp.ApiCollection
         public async Task<IEnumerable<OrderResponse>> GetOrdersByUserName(string userName)
         {
             var message = new HttpRequestBuilder(_settings.BaseAddress)
-                .SetPath(_settings.BasketPath)
+                .SetPath(_settings.OrderPath)
                 .AddQueryString("username", userName)
                 .HttpMethod(HttpMethod.Get)
                 .GetHttpMessage();
