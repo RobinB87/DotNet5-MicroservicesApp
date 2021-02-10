@@ -7,6 +7,6 @@ namespace WebApp.ApiCollection.Interfaces
     {
         Task<Basket> GetBasket(string userName);
         Task<Basket> UpdateBasket(Basket basket);
-        Task<Basket> CheckoutBasket(BasketCheckout basket);
+        Task CheckoutBasket(BasketCheckout basket);
     }
 }

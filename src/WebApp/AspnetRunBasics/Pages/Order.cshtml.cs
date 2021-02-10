@@ -1,26 +1,28 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApp.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApp.ApiCollection.Interfaces;
+using WebApp.Models;
 
 namespace WebApp
 {
     public class OrderModel : PageModel
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderApi _orderApi;
 
-        public OrderModel(IOrderRepository orderRepository)
+        public OrderModel(IOrderApi orderApi)
         {
-            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+            _orderApi = orderApi ?? throw new ArgumentNullException(nameof(orderApi));
         }
 
-        public IEnumerable<Entities.Order> Orders { get; set; } = new List<Entities.Order>();
+        public IEnumerable<OrderResponse> Orders { get; set; } = new List<OrderResponse>();
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Orders = await _orderRepository.GetOrdersByUserName("test");
+            var userName = "Robin";
+            Orders = await _orderApi.GetOrdersByUserName(userName);
 
             return Page();
         }       
